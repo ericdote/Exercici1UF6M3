@@ -1,8 +1,12 @@
 package persistencia;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,29 +17,24 @@ import java.util.logging.Logger;
 public class ConfigConnexio {
  
     private Connection con = null;
-    private String driver = "oracle.jdbc.driver.OracleDriver";//Classe Driver
-    private String cadenaConnexio = "jdbc:oracle:thin:@192.168.180.10:1521:INSLAFERRERI";
-    private String usuari = "ericdote";
-    private String contrasenya = "1234";
 
-    public ConfigConnexio() {
+
+    public ConfigConnexio() {        
     }
 
-    public ConfigConnexio(String driver, String cadenaConnexio, String usuari, String contrasenya) {
-        this.driver = driver;
-        this.cadenaConnexio = cadenaConnexio;
-        this.usuari = usuari;
-        this.contrasenya = contrasenya;
-    }
 
     /**
      * Carrega la classe Driver de la llibreria jdbc per a Oracle, obté una
      * instància de la classe Connection, amb la connexió oberta amb el SGBD a
      * la BD indicada a la cadena de connexió.
      *
+     * @param driver
+     * @param cadenaConnexio
+     * @param usuari
+     * @param contrasenya
      * @return torna true si s'estableix la connexió i false en cas contrari.
      */
-    public boolean connectar() {
+    public boolean connectar(String driver, String cadenaConnexio, String usuari, String contrasenya) {
         boolean comprova = false;
 
         try {
@@ -83,10 +82,13 @@ public class ConfigConnexio {
      *
      * @return la instància creada de Connection si ha està creada i null en cas
      * contrari.
+     * @throws java.io.FileNotFoundException
      */
-    public Connection getCon() {
+    public Connection getCon() throws FileNotFoundException, IOException {
+        Properties p = new Properties();
+        p.load(new FileInputStream("propiedades.properties"));
         if (con == null) {
-            this.connectar();
+            this.connectar(p.getProperty("driver"), p.getProperty("cadenaConnexio"), p.getProperty("usuari"), p.getProperty("contrasenya"));
         }
         return con;
     }

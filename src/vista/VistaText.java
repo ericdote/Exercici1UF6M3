@@ -73,4 +73,9 @@ public class VistaText {
         }
     }
 
+    
+    public int seleccionarNumUsuaris(){
+        return Integer.parseInt(JOptionPane.showInputDialog("Introdueix el numero de usuaris que vols introduir"));
+        
+    }
 }

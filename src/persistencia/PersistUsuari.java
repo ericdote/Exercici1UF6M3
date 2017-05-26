@@ -101,7 +101,7 @@ public class PersistUsuari {
     public boolean modificar(Usuari u) {
         boolean modificat = false;
         try {
-            PreparedStatement ps = con.prepareStatement("UPDATE USUARIS SET NOM = ?, COGNOMS = ? WHERE NIF = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE USUARIS SET NOM = ?, COGNOM = ? WHERE NIF = ?");
             ps.setString(1, u.getNom());
             ps.setString(2, u.getCognoms());
             ps.setString(3, u.getNif());

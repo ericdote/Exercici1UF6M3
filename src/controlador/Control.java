@@ -60,77 +60,124 @@ public class Control {
      * @return
      */
     public boolean opcionsMenu(int opcio) {
-        Usuari u = new Usuari();
         String nif;
-        boolean ok, sortir = false;
+        boolean ok = false, sortir = false;
         switch (opcio) {
             case 1:
-                u.setNif(vt.introduirDades("nif"));
-                u.setNom(vt.introduirDades("nom"));
-                u.setCognoms(vt.introduirDades("cognom"));
-                ok = gu.afegir(u);
-                if (ok) {
-                    vt.ok("Usuari afegit correctament");
-                } else {
-                    vt.error("No s'ha pogut afegir l'usuari");
-                }
+                afegir();
                 break;
             case 2:
-                List<Usuari> usuaris = new ArrayList<>();
-                while (!u.getNif().equals("")) {
-                    u.setNif(vt.introduirDades("nif"));
-                    u.setNom(vt.introduirDades("nom"));
-                    u.setCognoms(vt.introduirDades("cognom"));
-                    usuaris.add(u);
-                }
-                ok = gu.afegirArray(usuaris);
-                if (ok) {
-                    vt.ok("Usuaris afegits correctament");
-                } else {
-                    vt.error("No s'ha pogut afegir els usuaris");
-                }
+                afegirArray();
                 break;
             case 3:
-                nif = vt.introduirDades("nif");
-                ok = gu.esborrar(nif);
-                if (ok) {
-                    vt.ok("Usuari eliminat correctament");
-                } else {
-                    vt.error("No s'ha pogut eliminar l'usuari");
-                }
+                eliminar();
                 break;
             case 4:
-                u.setNif(vt.introduirDades("nif"));
-                u.setNom(vt.introduirDades("nom"));
-                u.setCognoms(vt.introduirDades("cognom"));
-                ok = gu.afegir(u);
-                if (ok) {
-                    vt.ok("Usuari modificar correctament");
-                } else {
-                    vt.error("No s'ha pogut modificar l'usuari");
-                }
+                modificar();
                 break;
             case 5:
-                nif = vt.introduirDades("nif");
-                u = gu.cerca(nif);
-                if (u != null) {
-                    vt.mostraUsuari(u);
-                } else {
-                    vt.error("No existeix l'usuari");
-                }
+                cerca();
                 break;
             case 6:
-                List<Usuari> list = gu.cercaTots();
-                if (list != null) {
-                    vt.mostraTotsUsuaris(list);
-                } else {
-                    vt.error("No hi han usuaris.");
-                }
+                cercaTots();
                 break;
             case 7:
                 sortir = true;
                 break;
         }
         return sortir;
+    }
+    /**
+     * Metode per cercar tots els usuaris
+     */
+    private void cercaTots() {
+        List<Usuari> list = gu.cercaTots();
+        if (list != null) {
+            vt.mostraTotsUsuaris(list);
+        } else {
+            vt.error("No hi han usuaris.");
+        }
+    }
+    /**
+     * Metode per cerca un usuari pel seu nif
+     */
+    private void cerca() {
+        String nif;
+        Usuari u = new Usuari();
+        nif = vt.introduirDades("nif");
+        u = gu.cerca(nif);
+        if (u != null) {
+            vt.mostraUsuari(u);
+        } else {
+            vt.error("No existeix l'usuari");
+        }
+    }
+    /**
+     * Metode per modificar un usuari
+     */
+    private void modificar() {
+        boolean ok;
+        Usuari u = new Usuari();
+        u.setNif(vt.introduirDades("nif per modificar"));
+        u.setNom(vt.introduirDades("nom"));
+        u.setCognoms(vt.introduirDades("cognom"));
+        ok = gu.modificar(u);
+        if (ok) {
+            vt.ok("Usuari modificar correctament");
+        } else {
+            vt.error("No s'ha pogut modificar l'usuari");
+        }
+    }
+    /**
+     * Metode per eliminar un usuari
+     */
+    private void eliminar() {
+        String nif;
+        boolean ok;
+        nif = vt.introduirDades("nif");
+        ok = gu.esborrar(nif);
+        if (ok) {
+            vt.ok("Usuari eliminat correctament");
+        } else {
+            vt.error("No s'ha pogut eliminar l'usuari");
+        }
+    }
+    /**
+     * Metode per afegir un array d'usuaris
+     */
+    private void afegirArray() {
+        boolean ok;
+        Usuari u;
+        int num = vt.seleccionarNumUsuaris();
+        List<Usuari> usuaris = new ArrayList<>(num);
+        for (int i = 0; i < num; i++) {
+            u = new Usuari();
+            u.setNif(vt.introduirDades("nif"));
+            u.setNom(vt.introduirDades("nom"));
+            u.setCognoms(vt.introduirDades("cognom"));
+            usuaris.add(u);
+        }
+        ok = gu.afegirArray(usuaris);
+        if (ok) {
+            vt.ok("Usuaris afegits correctament");
+        } else {
+            vt.error("No s'ha pogut afegir els usuaris");
+        }
+    }
+    /**
+     * Metode per afegir un usuari
+     */
+    private void afegir() {
+        boolean ok;
+        Usuari u = new Usuari();
+        u.setNif(vt.introduirDades("nif"));
+        u.setNom(vt.introduirDades("nom"));
+        u.setCognoms(vt.introduirDades("cognom"));
+        ok = gu.afegir(u);
+        if (ok) {
+            vt.ok("Usuari afegit correctament");
+        } else {
+            vt.error("No s'ha pogut afegir l'usuari");
+        }
     }
 }
